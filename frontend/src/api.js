@@ -2,7 +2,7 @@ import axios from "axios";
 import { ACCESS_TOKEN } from "./constants";
 import { useAuth } from "./contexts/AuthContext";
 const api = axios.create({
-    baseURL: "https://conservatively-oxidable-brice.ngrok-free.dev",
+    baseURL: "http://localhost:8000",
     withCredentials: true,
 });
 

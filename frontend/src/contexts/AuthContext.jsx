@@ -46,7 +46,7 @@ export function AuthProvider({children}){
         }
     }
     //login
-    const login = ({access_token, refresh_token})=>{
+    const login = ({access_token})=>{
         const decoded = jwtDecode(access_token);
         localStorage.setItem(ACCESS_TOKEN,access_token);
         setToken(access_token);
