@@ -54,12 +54,18 @@ export function AuthProvider({children}){
         setRole(decoded.role);
     }
     //logout
-    const logout = () =>{
-        localStorage.removeItem(ACCESS_TOKEN);
-        setToken(null);
-        setIsAuthenticated(null);
-        setRole(null);
-        navigate("/login");
+    const logout = async() =>{
+        try{
+            await api.get("/api/auth/logout");
+        }catch(err){
+            console.error("Backend logout failed", err);
+        }finally{
+                localStorage.removeItem(ACCESS_TOKEN);
+                setToken(null);
+                setIsAuthenticated(null);
+                setRole(null);
+                navigate("/login");
+        }
     }
     //refresh token logic
     const refreshAccessToken = async () =>{
