@@ -1,6 +1,7 @@
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import webSocket from "./components/webSocket";
 import Unauthorized from "./pages/Unauthorized";
 import {Routes, Route} from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -23,6 +24,7 @@ function App() {
               <Home/>
           </ProtectedRoute>
           }/>
+          <Route path = "/connection" element={<webSocket/>}/>
         <Route path = "/unauthorized" element={<Unauthorized/>}/>
         
       </Routes>
