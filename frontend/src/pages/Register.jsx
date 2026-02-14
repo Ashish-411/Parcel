@@ -7,7 +7,6 @@ function Register() {
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [phoneno, setPhoneNo] = useState("");
     const [activeTab, setActiveTab] = useState("customer"); // Track active tab
     
     const handleTabClick = (tab) => {
@@ -21,7 +20,6 @@ function Register() {
                 name,
                 email,
                 password,
-                phoneno,
                 role:activeTab,
             };
             const res = await api.post("/api/auth/register",payload);
@@ -29,7 +27,6 @@ function Register() {
             console.log(res.data);
             setName("");
             setPassword("");
-            setPhoneNo("");
             setEmail("");
         }catch(err){
             console.log(err);
@@ -91,14 +88,6 @@ function Register() {
                         minLength="8"
                     />
                     
-                    <input 
-                        type="tel"
-                        value={phoneno}
-                        onChange={(e) => setPhoneNo(e.target.value)}
-                        placeholder="Phone Number"
-                        className="form-input"
-                        required 
-                    />
                 </div>
                 
                 <div className="form-actions">

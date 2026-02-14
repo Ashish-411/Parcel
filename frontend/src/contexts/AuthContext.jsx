@@ -12,7 +12,9 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({children}){
     const [token,setToken] = useState(null);
     const [isAuthenticated,setIsAuthenticated] = useState(null);
+    //const [id,setId] = useState(null);
     const [role,setRole] = useState(null);
+    const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
     //getting token from local storage
@@ -39,6 +41,7 @@ export function AuthProvider({children}){
                 setToken(accessToken);
                 setIsAuthenticated(true);
                 setRole(decode.role);
+                await fetchProfile();
             }
         }catch(err){
             console.log(err);
@@ -46,12 +49,24 @@ export function AuthProvider({children}){
         }
     }
     //login
-    const login = ({access_token})=>{
+    const login = async({access_token})=>{
         const decoded = jwtDecode(access_token);
         localStorage.setItem(ACCESS_TOKEN,access_token);
         setToken(access_token);
         setIsAuthenticated(true);
         setRole(decoded.role);
+        await fetchProfile();
+    }
+    //fetch profile
+    const fetchProfile = async() => {
+        try{
+            const res = await api.get("api/auth/profile");
+            console.log("Profile info",res.data);
+            setUser(res?.data);
+        }catch(err){
+            console.error("failed to fetch profile", err);
+            logout();
+        }
     }
     //logout
     const logout = async() =>{
@@ -64,6 +79,7 @@ export function AuthProvider({children}){
                 setToken(null);
                 setIsAuthenticated(null);
                 setRole(null);
+                //setId(null);
                 navigate("/login");
         }
     }
@@ -77,6 +93,8 @@ export function AuthProvider({children}){
             setToken(newAccessToken);
             setIsAuthenticated(true);
             setRole(decoded.role);
+           // setId(decoded.id);
+            await fetchProfile();
             return newAccessToken;
         }catch(err){
             console.log(err.response?.data || err.message);
@@ -88,6 +106,7 @@ export function AuthProvider({children}){
         token,
         isAuthenticated,
         role,
+        user,
         login,
         logout,
         refreshAccessToken,
